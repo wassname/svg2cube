@@ -1,3 +1,4 @@
+'use strict';
 var webdriverio = require('webdriverio');
 
 var path = require('path');
@@ -18,16 +19,24 @@ var config = {
 var input = process.argv[2];
 console.log('input:',input);
 
+var screenHandler = function(err, screenshot, response) {
+    if (config.debug){
+        console.log({err,screenshot,response});
+    } else  if (err){
+        console.log('saveScreenshot',err);
+    }
+}
 
 globby(input).then(inputs => {
     console.log('glob(',input,') =>', inputs);
     for (var i=0; i<inputs.length;i++){
         var file = inputs[i];
-        
+
         var address = path.join(process.cwd(),file);
+        var ext = path.extname(file);
         var url = 'file://'+path.join(process.cwd(),file);
-        var outfile = address.replace('.svg','.png');
-        
+        var outfile = address.replace(ext,'.png');
+
         console.log(file, url,'=>',outfile);
         webdriverio
             .remote(options)
@@ -38,15 +47,8 @@ globby(input).then(inputs => {
             })
             .saveScreenshot(
                 [outfile],
-                function(err, screenshot, response) { 
-                    if (config.debug){
-                        console.log({file,err,screenshot,response});
-                    } else  if (err){
-                        'saveScreenshot',console.log(err);
-                    }
-                }
+                screenHandler
             )
             .end();
     }
 }, this)
-
