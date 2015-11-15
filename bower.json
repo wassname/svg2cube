@@ -1,0 +1,16 @@
+{
+  "name": "2c_css_svgs",
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "Unlicences",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

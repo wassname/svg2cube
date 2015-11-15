@@ -1,0 +1,97 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Snap.js isometric SVG</title>
+</head>
+<body>
+
+    <div>
+
+        <button><a id="download" href="">Download</a></button
+    </div>
+
+</body>
+
+<script  type="text/javascript" src="../../node_modules/snapsvg/dist/snap.svg.js" ></script>
+<script  type="text/javascript"     src="http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js" ></script>
+
+<!-- <script  type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script> -->
+<script src="projectSVG.js"></script>
+<script>
+
+
+var cube1
+var a = document.querySelector("#download")
+
+a.onclick=function(){
+    if (cube1){
+        var angle = parseInt(angleInput.valueAsNumber/100)
+        var f = parseInt(fInput.valueAsNumber/100)
+        a.type = 'image/svg+xml';
+        var svgString = cube1.toSVG();
+        var blob = new Blob([svgString], {"type": "image/svg+xml"});
+        a.download=cube1.options.topUrl+'_a'+angle+'_f'+f+'_cube.svg'
+        a.href = (window.URL || webkitURL).createObjectURL(blob);
+    }
+}
+
+
+// redraw cube oninput
+var update = function () {
+    if (cube1) {
+        cube1.update()
+    }
+}
+
+window.onload = function () {
+
+    cube1 = new SvgCube({
+        angle: 45,
+        flatten: 0,
+        topUrl: 'top.svg',
+        leftUrl: 'front.svg',
+        rightUrl: 'right.svg',
+        clipCircle: false,
+        stroke: {
+            "arrow-end": 'none',
+            "stroke": 'black', // stroke color for outline
+            "stroke-width": 2, // outline width
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-opacity": 0.5,
+        },
+        size: 256,
+    });
+    cube1.drawCube()
+
+    var gui = new dat.GUI();
+    gui.remember(cube1.options);
+    gui.add(cube1.options,'angle').min(0.00).max(90).step(1).onChange(update);
+    gui.add(cube1.options,'flatten').min(0.00).max(90).step(1).onChange(update);
+    gui.add(cube1.options,'size').min(1).max(512).step(1).onChange(update);
+
+    gui.add(cube1.options,'rotateX').min(0).max(360).step(1).onChange(update);
+    gui.add(cube1.options,'rotateY').min(0).max(360).step(1).onChange(update);
+    gui.add(cube1.options,'rotateZ').min(0).max(360).step(1).onChange(update);
+    gui.add(cube1.options,'perspective').min(0).max(500).step(1).onChange(update);
+
+    gui.add(cube1.options,'topUrl').onChange(update);
+    gui.add(cube1.options,'leftUrl').onChange(update);
+    gui.add(cube1.options,'rightUrl').onChange(update);
+
+
+
+
+}
+
+
+
+var module
+if (module){
+    module.exports=SvgCube
+}
+
+
+</script>
+
+</html>
