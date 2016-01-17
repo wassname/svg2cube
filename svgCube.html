@@ -21,12 +21,7 @@
     window.onload = function() {
         cube1 = new SvgCube({
             rotateX: 45,
-            topUrl: 'inputs/top.svg',
-            leftUrl: 'inputs/left.svg',
-            frontUrl: 'inputs/front.svg',
-            rightUrl: 'inputs/right.svg',
-            backUrl: 'inputs/back.svg',
-            bottomUrl: 'inputs/bottom.svg',
+            svgPanel: 'inputs/panels.svg',
             clipCircle: false,
             stroke: {
                 "stroke": 'black', // stroke color for outline
@@ -34,7 +29,6 @@
             },
             size: 444,
         });
-        cube1.drawCube()
         var text = cube1.getBounds();
 
         // Get dimensions of each pane and make it accesable to webdriver

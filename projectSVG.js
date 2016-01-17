@@ -2,36 +2,6 @@
 /**
  * Frontend js file to generate an cube of svg's
  */
-// http://cssdeck.com/labs/pure-css-animated-isometric-boxes
-
-
-
-// polyfill for bind  https://github.com/ariya/phantomjs/issues/11281
-if (!Function.prototype.bind) {
-    console.log("Using polyfill of Function.prototype.bind");
-  Function.prototype.bind = function (oThis) {
-    if (typeof this !== "function") {
-      // closest thing possible to the ECMAScript 5
-      // internal IsCallable function
-      throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
-    }
-
-    var aArgs = Array.prototype.slice.call(arguments, 1),
-        fToBind = this,
-        fNOP = function () {},
-        fBound = function () {
-          return fToBind.apply(this instanceof fNOP && oThis
-                 ? this
-                 : oThis,
-                 aArgs.concat(Array.prototype.slice.call(arguments)));
-        };
-
-    fNOP.prototype = this.prototype;
-    fBound.prototype = new fNOP();
-
-    return fBound;
-  };
-}
 
 var SvgCube = function (options) {
 
@@ -56,22 +26,17 @@ var SvgCube = function (options) {
             "stroke-width": 0, // outline width
         },
         // cube
-        topUrl: '', // url for image in top of cuve
+        svgPanel: '', // url for image in top of cuve
         topRot: 0, // rotation of top image in degrees
         topShad: 0, // shading for top
-        leftUrl: '',
         leftRot: 0,
         leftShad: 0.0,
-        rightUrl: '',
         rightRot: 0,
         rightShad: 0.0,
-        backUrl: '',
         backRot: 0,
         backShad: 0.0,
-        bottomUrl: '',
         bottomRot: 0,
         bottomShad: 0.0,
-        frontUrl: '',
         frontRot: 0,
         frontShad: 0.0,
     };
@@ -124,8 +89,75 @@ SvgCube.prototype.init = function () {
     // create SVG element
     var o = this.options;
 
+    /** Write sides if they have not already been written **/
+    if ($('body>.cube').length === 0) {
+        var cube = $('<div class="cube cube2"></div>');
+
+        var imageFront = $('' +
+            '<b width="256" height="256" class="front tint">' +
+            '<svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
+            '     xmlns="http://www.w3.org/2000/svg"' +
+            '     xmlns:xlink="http://www.w3.org/1999/xlink">' +
+            '  <image x="-512" y="-256" width="1024" height="768" xlink:href="'+o.svgPanel+'" />' +
+            '</svg>' +
+            '</b>');
+        cube.append(imageFront);
+
+        var imageL = $('' +
+            '<b width="256" height="256" class="left tint">' +
+            '<svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
+            '     xmlns="http://www.w3.org/2000/svg"' +
+            '     xmlns:xlink="http://www.w3.org/1999/xlink">' +
+            '  <image x="-256" y="-256" width="1024" height="768" xlink:href="'+o.svgPanel+'" />' +
+            '</svg>' +
+            '</b>');
+        cube.append(imageL);
+
+        var imageRight = $('' +
+            '<b width="256" height="256" class="right tint">' +
+            '   <svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
+            '        xmlns="http://www.w3.org/2000/svg"' +
+            '        xmlns:xlink="http://www.w3.org/1999/xlink">' +
+            '     <image x="-768" y="-256" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
+            '   </svg>' +
+            '</b>');
+        cube.append(imageRight);
+
+        var imageTop = $('' +
+            '<b width="256" height="256" class="top tint">' +
+            '<svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
+            '     xmlns="http://www.w3.org/2000/svg"' +
+            '     xmlns:xlink="http://www.w3.org/1999/xlink">' +
+            '  <image x="-512" y="0" width="1024" height="768" xlink:href="'+o.svgPanel+'" />' +
+            '</svg>' +
+            '</b>');
+        cube.append(imageTop);
+
+        var imageBack = $('' +
+            '<b width="256" height="256" class="back tint">' +
+            '<svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
+            '     xmlns="http://www.w3.org/2000/svg"' +
+            '     xmlns:xlink="http://www.w3.org/1999/xlink">' +
+            '  <image x="0" y="-256" width="1024" height="768" xlink:href="'+o.svgPanel+'" />' +
+            '</svg>' +
+            '</b>');
+        cube.append(imageBack);
+
+        var imageBottom = $('' +
+            '<b width="256" height="256" class="bottom tint">' +
+            '<svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
+            '     xmlns="http://www.w3.org/2000/svg"' +
+            '     xmlns:xlink="http://www.w3.org/1999/xlink">' +
+            '  <image x="0" y="0" width="1024" height="768" xlink:href="'+o.svgPanel+'" />' +
+            '</svg>' +
+            '</b>');
+        cube.append(imageBottom);
+
+        $('body').append(cube);
+
+    }
     // Now we generate some css to put everything in good positions
-    var transitions = 0;
+    var transitions = 0.1;
     var styleStr = '' +
         '<style id="projection">     ' +
         '                .cube {    ' +
@@ -140,7 +172,7 @@ SvgCube.prototype.init = function () {
         '                    position: absolute;    ' +
         '                    -webkit-transform: translate(' + this.cw / 2 + 'px,' + 0 * this.ch / 2 + 'px) perspective(-' + o.perspective + 'px) rotateX(-' + o.rotateX + 'deg) rotateY(' + o.rotateY + 'deg) rotateZ(' + o.rotateZ + 'deg)   scaleX(' + o.scaleX + ')  scaleY(' + o.scaleY + ')  scaleZ(' + o.scaleZ + ');    ' +
         '                    -webkit-transform-style: preserve-3d;    ' +
-        '                    -webkit-transition: '+transitions+'s;    ' +
+        '                    -webkit-transition: ' + transitions + 's;    ' +
         '                }    ' +
         '                .back {    ' +
         '                	transform: translateZ(-' + o.size / 2 + 'px) rotateY(180deg);    ' +
@@ -165,27 +197,27 @@ SvgCube.prototype.init = function () {
         '                	transform: translateZ(' + o.size / 2 + 'px);    ' +
         '                }    ' +
         '                /* custom orientation/rotation settings for each image */    ' +
-        '                .back>embed{    ' +
+        '                .back>svg{    ' +
         '                     transform: rotate(' + o.backRot + 'deg);    ' +
         '                 }    ' +
-        '                 .front>embed{    ' +
+        '                 .front>svg{    ' +
         '                      transform: rotate(' + o.frontRot + 'deg);    ' +
         '                  }    ' +
-        '                .right>embed{    ' +
+        '                .right>svg{    ' +
         '                      transform: rotate(' + o.rightRot + 'deg);    ' +
         '                }    ' +
-        '                .left>embed{    ' +
+        '                .left>svg{    ' +
         '                      transform: rotate(' + o.leftRot + 'deg);    ' +
         '                }    ' +
-        '                .top>embed{    ' +
+        '                .top>svg{    ' +
         '                     transform: rotate(' + 90 + o.topRot + 'deg);    ' +
         '                 }    ' +
-        '                .bottom>embed{    ' +
+        '                .bottom>svg{    ' +
         '                     transform: rotate(' + o.bottomRot + 'deg);    ' +
         '                 }    ' +
         '                b{    ' +
         '                  position:absolute;    ' +
-        '                  transition: all '+transitions+'s linear;    ' +
+        '                  transition: all ' + transitions + 's linear;    ' +
         '                }    ' +
         '                /* outline */    ' +
         '                .face {    ' +
@@ -226,81 +258,15 @@ SvgCube.prototype.init = function () {
         '                    border-radius: 0px;    ' +
         '                }*/    ' +
         '            </style>';
-
-
-    if ($('body>.cube').length === 0) {
-        var cube = $('<div class="cube cube2"></div>');
-
-        var imageFront = $('<b width="256" height="256" class="front tint"><embed type="image/svg+xml"  src="' + o.frontUrl + '" class="face"></embed></b>');
-        cube.append(imageFront);
-
-        var imageL = $('<b width="256" height="256" class="left tint"><embed type="image/svg+xml"  src="' + o.leftUrl + '" class="face"></embed></b>');
-        cube.append(imageL);
-
-        var imageRight = $('<b width="256" height="256" class="right tint"><embed type="image/svg+xml"  src="' + o.rightUrl + '" class="face"></embed></b>');
-        cube.append(imageRight);
-
-        var imageTop = $('<b width="256" height="256" class="top tint"><embed type="image/svg+xml"  src="' + o.topUrl + '" class="face"></embed></b>');
-        cube.append(imageTop);
-
-        var imageBack = $('<b width="256" height="256" class="back tint"><embed type="image/svg+xml"  src="' + o.backUrl + '" class="face"></embed></b>');
-        cube.append(imageBack);
-
-        var imageBottom = $('<b width="256" height="256" class="bottom tint"><embed type="image/svg+xml"  src="' + o.bottomUrl + '" class="face"></embed></b>');
-        cube.append(imageBottom);
-
-        $('body').append(cube);
-
-
-        /* TODO these will fill in some color inside in order to allow curved edges without seeing through cube, sues o.stroke.stroke for color */
-        // var xMid = $(`<div width="256" height="256" class="face mid xMid"></div>`)
-        // cube.append(xMid);
-        //
-        // var yMid = $(`<div width="256" height="256" class="face mid yMid"></b>`)
-        // cube.append(yMid);
-        //
-        // var zMid = $(`<div width="256" height="256" class="face mid zMid"></div>`)
-        // cube.append(zMid);
-
-
-        $('body').append(cube);
-
-
-    }
-
     $('head>#projection').remove();
     $('head').append($(styleStr));
-
-};
-
-/* draw cube from urls in options and outline according to options */
-SvgCube.prototype.drawCube = function () {
-
-    // var imgS = this.options.size / Math.sqrt(2);
-    // this.cube = this.paper.g();
-    // this.cube.attr({
-    //     class: 'cube cube2',
-    //     id: "c2notnested",
-    // });
-    // this.leftImg = this.cube.image(this.options.leftUrl,0,0,imgS,imgS);
-    // this.leftImg.attr({
-    //     class: 'face left',
-    // })
-    // this.rightImg = this.cube.image(this.options.rightUrl,0,0,imgS,imgS);
-    // this.rightImg.attr({
-    //     class: 'face right',
-    // })
-    // this.topImg = this.cube.image(this.options.topUrl,0,0,imgS,imgS);
-    // this.topImg.attr({
-    //     class: 'face top',
-    // })
 
 };
 
 /**
  * Get the bounds of the images for a screenshot
  * uses $.position to get min,max of each side of the image
- * @return {[type]} [description]
+ * @return {object} object.dimension.[min|max] e.g. object.left.min
  */
 SvgCube.prototype.getBounds = function () {
     var bounds = {};
@@ -310,7 +276,7 @@ SvgCube.prototype.getBounds = function () {
             if (dim in pos) {
 
                 // init
-                if (bounds[dim]===undefined) {
+                if (bounds[dim] === undefined) {
                     bounds[dim] = {
                         'max': pos[dim],
                         'min': pos[dim]
@@ -326,34 +292,9 @@ SvgCube.prototype.getBounds = function () {
     return bounds;
 };
 
-/**
- * Get the bounds of the images for a screenshot
- * uses $.position to get min,max of each side of the image
- * @return {[type]} [description]
- */
-SvgCube.prototype.getAllBounds = function () {
-    var bounds = {};
-    $('.cube>b').each(function () {
-        var pos = this.getBoundingClientRect();
-        for (var dim in pos) {
-            if (dim in pos) {
-
-                // init
-                if (bounds[dim]===undefined) {
-                    bounds[dim] = [];
-                }
-                // get max and min
-                bounds[dim].push(pos[dim]);
-            }
-        }
-    });
-    return bounds;
-};
-
-
 SvgCube.prototype.update = function () {
     //this.paper.remove();
     this.init();
-    this.drawCube();
+    //this.drawCube();
     console.log(this.getBounds());
 };
