@@ -1,0 +1,52 @@
+<!-- Non gui version of svgCube_gui.html for webdriver converions to svg -->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Snap.js isometric SVG</title>
+</head>
+
+<body>
+</body>
+
+<script type="text/javascript" src="../../node_modules/snapsvg/dist/snap.svg.js"></script>
+<script src="projectSVG.js"></script>
+<script>
+    var cube1
+
+
+    // redraw cube oninput
+    var update = function() {
+        if (cube1) {
+            cube1.update()
+        }
+    }
+
+    window.onload = function() {
+
+        cube1 = new SvgCube({
+            rotateX: 45,
+            topUrl: 'inputs/top.svg',
+            leftUrl: 'inputs/left.svg',
+            frontUrl: 'inputs/front.svg',
+            rightUrl: 'inputs/right.svg',
+            backUrl: 'inputs/back.svg',
+            bottomUrl: 'inputs/bottom.svg',
+            clipCircle: false,
+            stroke: {
+                "stroke": 'black', // stroke color for outline
+                "stroke-width": 0, // outline width
+            },
+            size: 256,
+        });
+        cube1.drawCube()
+    }
+
+
+    var module
+    if (module) {
+        module.exports = SvgCube
+    }
+</script>
+
+</html>

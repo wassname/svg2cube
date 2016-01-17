@@ -1,0 +1,21 @@
+{
+  "name": "gen-svg-cube",
+  "version": "0.0.5",
+  "description": "Render and download svg cubes using webdriver",
+  "main": "render.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node render.js"
+  },
+  "repository": "git@gitlab.com:wassname/svg2Cube.git",
+  "author": "wassname@wassname.org",
+  "private": true,
+  "license": "ISC",
+  "dependencies": {
+    "fs": "0.0.2",
+    "globby": "^4.0.0",
+    "path": "^0.12.7",
+    "snapsvg": "^0.4.0",
+    "webdriverio": "^3.4.0"
+  }
+}

@@ -1,0 +1,116 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Snap.js isometric SVG</title>
+</head>
+
+<body>
+
+    <div>
+        <p>This uses a css3 to make an SVG cube from a SVG panel. </p>
+
+        <p>The buttons allow you to try different parameters. </p>
+        <p>The front, left, etc svg's are just linked to panel.svg </p>
+        <button><a id="download" href="">Download</a></button </div>
+
+</body>
+
+<script type="text/javascript" src="../../node_modules/snapsvg/dist/snap.svg.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<!-- <script  type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script> -->
+
+<script src="projectSVG.js"></script>
+<script>
+    var cube1
+    var a = document.querySelector("#download")
+
+    a.onclick = function() {
+        if (cube1) {
+            var angle = parseInt(angleInput.valueAsNumber / 100)
+            var f = parseInt(fInput.valueAsNumber / 100)
+            a.type = 'image/svg+xml';
+            var svgString = cube1.toSVG();
+            var blob = new Blob([svgString], {
+                "type": "image/svg+xml"
+            });
+            a.download = cube1.options.topUrl + '_a' + angle + '_f' + f + '_cube.svg'
+            a.href = (window.URL || webkitURL).createObjectURL(blob);
+        }
+    }
+
+
+    // redraw cube oninput
+    var update = function() {
+        if (cube1) {
+            cube1.update()
+        }
+    }
+
+    window.onload = function() {
+
+        cube1 = new SvgCube({
+            rotateX: 45,
+            topUrl: 'inputs/top.svg',
+            leftUrl: 'inputs/left.svg',
+            frontUrl: 'inputs/front.svg',
+            rightUrl: 'inputs/right.svg',
+            backUrl: 'inputs/back.svg',
+            bottomUrl: 'inputs/bottom.svg',
+            clipCircle: false,
+            stroke: {
+                "stroke": 'black', // stroke color for outline
+                "stroke-width": 0, // outline width
+            },
+            size: 256,
+        });
+        cube1.drawCube()
+
+        var gui = new dat.GUI();
+        gui.remember(cube1.options);
+
+        gui.add(cube1.options, 'size').min(1).max(512).step(10).onChange(update);
+        gui.add(cube1.options, 'rotateX').min(0).max(360).step(1).onChange(update);
+        gui.add(cube1.options, 'rotateY').min(0).max(360).step(1).onChange(update);
+        gui.add(cube1.options, 'rotateZ').min(0).max(360).step(1).onChange(update);
+        //gui.add(cube1.options,'perspective').min(0).max(50).step(1).onChange(update);
+        gui.add(cube1.options, 'scaleX').min(0.0).max(2.01).step(0.1).onChange(update);
+        gui.add(cube1.options, 'scaleY').min(-1.00).max(2.01).step(0.1).onChange(update);
+        gui.add(cube1.options, 'scaleZ').min(0.0).max(2.01).step(0.1).onChange(update);
+
+        var imgUrls = gui.addFolder('Images urls');
+        imgUrls.add(cube1.options, 'topUrl').onChange(update);
+        imgUrls.add(cube1.options, 'leftUrl').onChange(update);
+        imgUrls.add(cube1.options, 'rightUrl').onChange(update);
+        imgUrls.add(cube1.options, 'bottomUrl').onChange(update);
+        imgUrls.add(cube1.options, 'frontUrl').onChange(update);
+        imgUrls.add(cube1.options, 'backUrl').onChange(update);
+
+        var outline = gui.addFolder('outline');
+        outline.add(cube1.options.stroke, 'stroke-width').min(0.0).max(20).step(1).onChange(update);
+        outline.add(cube1.options.stroke, 'stroke').onChange(update);
+        outline.add(cube1.options, 'borderRadius').min(0).max(128).step(1).onChange(update);
+
+        var imageRot = gui.addFolder('Image rotation');
+        imageRot.add(cube1.options, 'topRot').min(0.0).max(360).step(90).onChange(update);
+        imageRot.add(cube1.options, 'bottomRot').min(0.0).max(360).step(90).onChange(update);
+        imageRot.add(cube1.options, 'leftRot').min(0.0).max(360).step(90).onChange(update);
+        imageRot.add(cube1.options, 'rightRot').min(0.0).max(360).step(90).onChange(update);
+        imageRot.add(cube1.options, 'backRot').min(0.0).max(360).step(90).onChange(update);
+        imageRot.add(cube1.options, 'frontRot').min(0.0).max(360).step(90).onChange(update);
+
+
+
+
+    }
+
+
+
+    var module
+    if (module) {
+        module.exports = SvgCube
+    }
+</script>
+
+</html>

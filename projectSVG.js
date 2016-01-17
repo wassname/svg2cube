@@ -1,4 +1,7 @@
 'use strict';
+/**
+ * Frontend js file to generate an cube of svg's
+ */
 // http://cssdeck.com/labs/pure-css-animated-isometric-boxes
 try {
     var Snap = require('snapsvg');
