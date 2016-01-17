@@ -5,45 +5,40 @@
 
 var webdriverio = require('webdriverio');
 var path = require('path');
-var fs = require('fs');
-var system = require('system')
+// var fs = require('fs');
+// var system = require('system')
 var globby = require('globby');
+var gm = require('gm');
+
+// start chromedriver for selenium
+var chromedriver = require('chromedriver');
+chromedriver.start();
 
 var options = {
+    host: "localhost",
+    port: 9515,
     desiredCapabilities: {
-        browserName: 'chrome'
+        browserName: 'chrome',
+        chromeOptions: {
+            binary: '/usr/bin/chromium'
+        }
     }
 };
+var client = webdriverio.remote(options);
 
-
-/** TODO
- * Need to look at clien bounding box for all parts of cube, then get minLeft, maxRight etc, then crop the screenshot there
- *
- **/
-
-// get config
-var config = {
-    debug: false
-}
 
 // get inputs
-var input = process.argv[2];
-console.log('input:', input);
-
-
-/**
- * Screenshot for debug and notification of screenshots
- */
-var screenHandler = function (err, screenshot, response) {
-    if (config.debug) {
-        console.log({
-            err, screenshot, response
-        });
-    } else if (err) {
-        console.log('saveScreenshot', err);
-    }
+if (process.argv.length < 3 || process.argv.length > 3) {
+    console.log('Command: ', process.argv);
+    console.log('Usage: rasterize.js filename');
+    return;
+} else {
+    var input = process.argv[2];
+    console.log('input:', input);
 }
 
+
+var bounds;
 globby(input).then(inputs => {
 
     console.log('glob(', input, ') ->', inputs);
@@ -57,19 +52,45 @@ globby(input).then(inputs => {
         var url = 'file://' + path.join(process.cwd(), file);
         var outfile = address.replace(ext, '.png');
 
+        // create panel elements temporarily
+
         console.log('Converting ', file, url, '->', outfile);
 
-        webdriverio
-            .remote(options)
-            .init()
+        client.init()
             .url(url)
-            .getTitle().then(title => {
-                console.log('Title is: ' + title);
+            .waitForVisible('.front', 5000)
+            // get image boundries from html
+            .execute(function () {
+                return $('#dimensions').text();
             })
-            .waitForVisible('.front', 1000) //.then(callback);
-            .saveScreenshot(
-                outfile, screenHandler
-            )
+            .then(text => {
+                try {
+                    bounds = JSON.parse(text.value);
+                } catch (e) {
+                    console.warn(text);
+                }
+            })
+            // take a screen shot
+            .screenshot()
+            // crop using graphics magic
+            .then(res => {
+                var imgBuffer = new Buffer(res.value, 'base64');
+
+                /** Crop it using graphicks magic */
+                gm(imgBuffer)
+                    .crop(
+                        bounds.right.max - bounds.left.min,
+                        bounds.bottom.max - bounds.top.min,
+                        bounds.left.min,
+                        bounds.top.min
+                    )
+                    .write(outfile, function (err) {
+                        if (!err) console.log('done');
+                    });
+
+            })
             .end();
+
     }
 }, this)
+chromedriver.stop();

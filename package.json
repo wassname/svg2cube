@@ -5,17 +5,21 @@
   "main": "render.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node render.js"
+    "start": "node render.js svgCube.html"
   },
   "repository": "git@gitlab.com:wassname/svg2Cube.git",
   "author": "wassname@wassname.org",
   "private": true,
   "license": "ISC",
   "dependencies": {
+    "chromedriver": "^2.20.0",
     "fs": "0.0.2",
     "globby": "^4.0.0",
+    "jquery": "^2.2.0",
+    "mustache": "^2.2.1",
     "path": "^0.12.7",
     "snapsvg": "^0.4.0",
-    "webdriverio": "^3.4.0"
+    "system": "^1.0.4",
+    "webdriverio": "^3"
   }
 }
