@@ -2,24 +2,29 @@
 
 <head>
     <meta charset="utf-8">
-    <title>svg2Cube</title>
+    <title>svg2cube</title>
 </head>
 
 <body>
+    <h1>svg2cube - demo</h1>
+
 
     <div>
-        <p>This uses a css3 to make an SVG cube from a SVG panel. </p>
+        <p>Fold a svg panel into a cube and take images at isometric angles. </p>
 
         <p>The buttons allow you to try different parameters. </p>
-        <p>The front, left, etc svg's are just linked to panel.svg </p>
     </div>
+
+    <img src="inputs/panels.svg" style="height: 15em;"></img>
+
+
+    <p id="loading">Loading...</p>
 
 </body>
 
-<!-- <script type="text/javascript" src="node_modules/snapsvg/dist/snap.svg.js"></script> -->
-<script  type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script type="text/javascript" src="/cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+<script type="text/javascript" src="/cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
 <script src="svg2cube-frontend.js"></script>
 
@@ -73,16 +78,9 @@
         imageRot.add(cube1.options, 'backRot').min(0.0).max(360).step(90).onChange(update);
         imageRot.add(cube1.options, 'frontRot').min(0.0).max(360).step(90).onChange(update);
 
+        $('#loading').remove();
 
 
-
-    }
-
-
-
-    var module
-    if (module) {
-        module.exports = SvgCube
     }
 </script>
 
