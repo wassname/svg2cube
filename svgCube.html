@@ -1,40 +1,20 @@
-<!-- Non gui version of svgCube_gui.html for webdriver converions to svg -->
+<!-- Empty html page to load client side scripts. It's then used by webdrive to insert and render -->
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <title>svg2Cube</title>
 </head>
 
 <body>
     <div style="display: none;" id="dimensions">
-        </input>
+    </div>
 </body>
 
 
 <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="SvgCube.js"></script>
+<script type="text/javascript" src="svg2cube-frontend.js"></script>
 
 
 <script>
-    // var cube1
-    // window.onload = function() {
-    //     cube1 = new SvgCube.SvgCube({
-    //         rotateX: 45,
-    //         svgPanel: 'inputs/panels.svg',
-    //         clipCircle: false,
-    //         stroke: {
-    //             "stroke": 'black', // stroke color for outline
-    //             "stroke-width": 0, // outline width
-    //         },
-    //         size: 444,
-    //     });
-    //     var text = cube1.getBounds();
-    //
-    //     // Get dimensions of each pane and make it accesable to webdriver
-    //     $('#dimensions').attr('value', 1)
-    //     $('#dimensions').text(JSON.stringify(text))
-    // }
 </script>
 
 </html>

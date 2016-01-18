@@ -1,20 +1,21 @@
 {
-  "name": "gen-svg-cube",
-  "version": "0.0.5",
-  "description": "Render and download svg cubes using webdriver",
-  "main": "render.js",
+  "name": "svg2cube",
+  "version": "0.0.6",
+  "description": "Fold a svg panel into a cube and take images at isometric angles",
+  "main": "svg2cube.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node render.js svgCube.html",
-    "debug": "NODE_DEBUG=request,webdriver,chromedriver DEBUG=true node render.js svgCube.html"
+    "start": "node svg2cube.js inputs/panels.svg",
+    "debug": "NODE_DEBUG=request,webdriver,chromedriver DEBUG=true node svg2cube.js inputs/panels.svg"
   },
   "repository": "git@gitlab.com:wassname/svg2Cube.git",
   "author": "wassname@wassname.org",
   "private": true,
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "chromedriver": "^2.20.0",
     "fs": "0.0.2",
+    "gm": "^1.21.1",
     "jquery": "^2.2.0",
     "path": "^0.12.7",
     "system": "^1.0.4",
