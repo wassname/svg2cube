@@ -1,6 +1,6 @@
-svg2cube
+# svg2cube
 
-Generate isometric game sprites. Inputs an svg panel and it's folded into a cube and rendered from any angle. [Example hosted here](https://wassname.github.io/svg2cube/).
+Generate isometric game sprites. Input an svg panel and it's folded into a cube and rendered from any angle. [Example hosted here](https://wassname.github.io/svg2cube/).
 
 # Quickstart
 
@@ -13,13 +13,13 @@ node svg2cube-cli.js inputs/panels.svg
 
 # Screenshots
 ## Input:
-<img src="images/input.png" style="max-width: 20em;"></img>
+<img src="images/input.png" style="max-width: 10em;"></img>
 
 ## Output:
-<img src="images/result.png" style="max-width: 20em;"></img>
+<img src="images/result.png" style="max-width: 10em;"></img>
 
 ## GUI
-<img src="images/gui.png" style="max-width: 20em;"></img>
+<img src="images/gui.png" style="max-width: 10em;"></img>
 
 # Installation
 `npm i`
@@ -38,7 +38,8 @@ var svg2cube = require('./svg2cube.js');
 svg2cube('inputs/panels.svg',{rotateY: 45, size:256});
 ```
 
-Now create your own panel and generate your own sprites.
+Now create your own panel and generate your own sprites. Available options are
+[here for now](https://github.com/wassname/svg2cube/blob/master/svg2cube-frontend.js#L10).
 
 # Description
 
@@ -53,12 +54,3 @@ wassname.org
 
 # License
 MIT
-
-# TODO
-
-- Enable this to use gulp
-- Enable this to input and output streams
-- Disable rendering of some sides, so we can create isometric tiles
-- Publish on github
-- Put up github page
-- Add inputs to gui page

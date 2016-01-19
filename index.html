@@ -120,13 +120,30 @@ function has3d() {
         gui.add(cube1.options, 'scaleY').min(-1.00).max(2.01).step(0.1).onChange(update);
         gui.add(cube1.options, 'scaleZ').min(0.0).max(2.01).step(0.1).onChange(update);
 
-        var imgUrls = gui.addFolder('Images urls');
+        var imgUrls = gui.addFolder('Sides');
         imgUrls.add(cube1.options, 'svgPanel').onChange(update);
+        imgUrls.add(cube1.options, 'leftRender').onChange(update);
+        imgUrls.add(cube1.options, 'topRender').onChange(update);
+        imgUrls.add(cube1.options, 'bottomRender').onChange(update);
+        imgUrls.add(cube1.options, 'rightRender').onChange(update);
+        imgUrls.add(cube1.options, 'frontRender').onChange(update);
+        imgUrls.add(cube1.options, 'backRender').onChange(update);
 
-        var outline = gui.addFolder('outline');
+        var shading = gui.addFolder('Shading');
+        shading.add(cube1.options, 'drawShading').onChange(update);
+        shading.add(cube1.options, 'topShad').min(0.0).max(1).step(0.05).onChange(update);
+        shading.add(cube1.options, 'leftShad').min(0.0).max(1).step(0.05).onChange(update);
+        shading.add(cube1.options, 'rightShad').min(0.0).max(1).step(0.05).onChange(update);
+        shading.add(cube1.options, 'backShad').min(0.0).max(1).step(0.05).onChange(update);
+        shading.add(cube1.options, 'bottomShad').min(0.0).max(1).step(0.05).onChange(update);
+        shading.add(cube1.options, 'frontShad').min(0.0).max(1).step(0.05).onChange(update);
+
+        var outline = gui.addFolder('Outline');
+        outline.add(cube1.options, 'drawOutline').onChange(update);
         outline.add(cube1.options.stroke, 'stroke-width').min(0.0).max(20).step(1).onChange(update);
         outline.add(cube1.options.stroke, 'stroke').onChange(update);
         outline.add(cube1.options, 'borderRadius').min(0).max(128).step(1).onChange(update);
+
 
         var imageRot = gui.addFolder('Image rotation');
         imageRot.add(cube1.options, 'topRot').min(0.0).max(360).step(90).onChange(update);
