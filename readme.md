@@ -1,6 +1,6 @@
 # About  svg2cube
 
-Generate isometric game sprites. Input an svg panel and it's folded into a cube and rendered from any angle. [Example hosted here](https://wassname.github.io/svg2cube/).
+Generate isometric game sprites. Input an svg panel and it's folded into a cube and rendered from any angle. [Demo](https://wassname.github.io/svg2cube/).
 
 ## Quickstart
 
@@ -31,7 +31,7 @@ Note that phantomjs can't be used because it doesn't support CSS-3D transforms.
 - Generate png sprites
 
 ## Installation
-Clone the repository then install dependacies using node package manager (npm).
+Clone the repository then install dependencies using node package manager (npm).
 
 ```bash
 git clone git@github.com:wassname/svg2cube.git
