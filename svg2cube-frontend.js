@@ -6,73 +6,85 @@
 (function (exports) {
     exports.SvgCube = function (svgPanel, options) {
 
+
         // Inputs and options
-        var defaultOptions = {
-            rotateX: 30, // isometric angle
+        this.defaultOptions = {
+
+            rotateX: 30, // isometric perspective
             rotateY: 45,
             rotateZ: 0,
-            perspective: 0, // doesn't do anything usefull
-            scaleX: 1.00,
-            scaleY: 1.00, // flatten
-            scaleZ: 1.00, // push face
 
-            size: 400,
+            perspective: 0, // doesn't do anything usefull
+
+            scaleX: 1.00,
+            scaleY: 1.00, // flatten you cube from the top
+            scaleZ: 1.00, // distort cube by pushing push face back
+
+            size: 400, // size of one side
             verbose: false,
+
             // outline
             drawOutline: false,
             drawShading: false,
-            borderRadius: 0,
+            borderRadius: 0, // in px
             stroke: {
                 "stroke": 'black', // stroke color for outline
-                "stroke-width": 0, // outline width
+                "stroke-width": 0, // outline width in px
             },
+
             // cube
-            topRot: 0, // rotation of top image in degrees
-            topShad: 0, // shading for top
+            topRot: 0, // clockwise rotation of top image in degrees, int 0-360, e.g. 180 will make a face upside down without changing the cube geometry.
             leftRot: 0,
-            leftShad: 0.0,
             rightRot: 0,
-            rightShad: 0.0,
             backRot: 0,
-            backShad: 0.0,
             bottomRot: 0,
-            bottomShad: 0.0,
             frontRot: 0,
+
+            topShad: 0, // shading for top, float from 0 to 1
+            leftShad: 0.0,
+            rightShad: 0.0,
+            backShad: 0.0,
+            bottomShad: 0.0,
             frontShad: 0.0,
+
+            // turn off rendering of sides so you can make isometric tiles
+            leftRender: true,
+            topRender: true,
+            bottomRender: true,
+            rightRender: true,
+            frontRender: true,
+            backRender: true
+
         };
 
-        // add defaults, 2 levels deep
+        // add defaults to input options, looking 2 levels deep
         options = options || {};
-        for (var opt in defaultOptions) {
-            if (defaultOptions.hasOwnProperty(opt) && !options.hasOwnProperty(opt)) {
-                options[opt] = defaultOptions[opt];
+        for (var opt in this.defaultOptions) {
+            if (this.defaultOptions.hasOwnProperty(opt) && !options.hasOwnProperty(opt)) {
+                options[opt] = this.defaultOptions[opt];
             }
-            for (var opt2 in defaultOptions[opt]) {
-                if (defaultOptions[opt].hasOwnProperty(opt2) && !options[opt].hasOwnProperty(opt2)) {
-                    options[opt][opt2] = defaultOptions[opt][opt2];
+            for (var opt2 in this.defaultOptions[opt]) {
+                if (this.defaultOptions[opt].hasOwnProperty(opt2) && !options[opt].hasOwnProperty(opt2)) {
+                    options[opt][opt2] = this.defaultOptions[opt][opt2];
                 }
             }
         }
+
         options.svgPanel = svgPanel;
         this.options = options;
-        console.log(svgPanel);
 
-
-        // legacy compat
-        if (options.flatten !== undefined) {
-            options.scaleY = 1 - options.flatten;
+        // Add a couple of obvious options
+        if (this.options.flatten !== undefined) {
+            this.options.scaleY = 1 - this.options.flatten;
         }
-        if (options.angle !== undefined) {
-            options.rotateX = options.angle;
-        }
-
-        if (!options.drawOutline) {
-            options.stroke['stroke-width'] = 0;
+        if (this.options.angle !== undefined) {
+            this.options.rotateX = this.options.angle;
         }
 
         this.init();
 
     };
+
 
     exports.SvgCube.prototype.init = function () {
 
@@ -92,76 +104,96 @@
         // create SVG element
         var o = this.options;
 
-        /** Write sides if they have not already been written **/
-        if ($('body .cube').length === 0) {
-            var cube = $('<div class="cube cube2"></div>');
 
-            var imageFront = $('' +
-                '<b width="256" height="256" class="front tint">' +
-                '<svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
-                '     xmlns="http://www.w3.org/2000/svg"' +
-                '     xmlns:xlink="http://www.w3.org/1999/xlink">' +
-                '  <image x="-512" y="-256" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
-                '</svg>' +
-                '</b>');
+
+        /** Write sides **/
+        var cube = $('<div class="cube cube2"></div>');
+
+        var imageFront = $('' +
+            '<b width="256" height="256" class="front tint">' +
+            '<svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
+            '     xmlns="http://www.w3.org/2000/svg"' +
+            '     xmlns:xlink="http://www.w3.org/1999/xlink">' +
+            '  <image x="-512" y="-256" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
+            '</svg>' +
+            '</b>');
+        if (this.options.frontRender){
             cube.append(imageFront);
-
-            var imageL = $('' +
-                '<b width="256" height="256" class="left tint">' +
-                '<svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
-                '     xmlns="http://www.w3.org/2000/svg"' +
-                '     xmlns:xlink="http://www.w3.org/1999/xlink">' +
-                '  <image x="-256" y="-256" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
-                '</svg>' +
-                '</b>');
-            cube.append(imageL);
-
-            var imageRight = $('' +
-                '<b width="256" height="256" class="right tint">' +
-                '   <svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
-                '        xmlns="http://www.w3.org/2000/svg"' +
-                '        xmlns:xlink="http://www.w3.org/1999/xlink">' +
-                '     <image x="-768" y="-256" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
-                '   </svg>' +
-                '</b>');
-            cube.append(imageRight);
-
-            var imageTop = $('' +
-                '<b width="256" height="256" class="top tint">' +
-                '<svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
-                '     xmlns="http://www.w3.org/2000/svg"' +
-                '     xmlns:xlink="http://www.w3.org/1999/xlink">' +
-                '  <image x="-512" y="0" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
-                '</svg>' +
-                '</b>');
-            cube.append(imageTop);
-
-            var imageBack = $('' +
-                '<b width="256" height="256" class="back tint">' +
-                '<svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
-                '     xmlns="http://www.w3.org/2000/svg"' +
-                '     xmlns:xlink="http://www.w3.org/1999/xlink">' +
-                '  <image x="0" y="-256" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
-                '</svg>' +
-                '</b>');
-            cube.append(imageBack);
-
-            var imageBottom = $('' +
-                '<b width="256" height="256" class="bottom tint">' +
-                '<svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
-                '     xmlns="http://www.w3.org/2000/svg"' +
-                '     xmlns:xlink="http://www.w3.org/1999/xlink">' +
-                '  <image x="0" y="0" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
-                '</svg>' +
-                '</b>');
-            cube.append(imageBottom);
-
-            var target=$('#svg2cube');
-            if (!target){target=$('body');}
-
-            target.append(cube);
-
         }
+
+        var imageL = $('' +
+            '<b width="256" height="256" class="left tint">' +
+            '<svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
+            '     xmlns="http://www.w3.org/2000/svg"' +
+            '     xmlns:xlink="http://www.w3.org/1999/xlink">' +
+            '  <image x="-256" y="-256" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
+            '</svg>' +
+            '</b>');
+        if (this.options.leftRender){
+            cube.append(imageL);
+        }
+
+        var imageRight = $('' +
+            '<b width="256" height="256" class="right tint">' +
+            '   <svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
+            '        xmlns="http://www.w3.org/2000/svg"' +
+            '        xmlns:xlink="http://www.w3.org/1999/xlink">' +
+            '     <image x="-768" y="-256" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
+            '   </svg>' +
+            '</b>');
+        if (this.options.rightRender){
+            cube.append(imageRight);
+        }
+
+        var imageTop = $('' +
+            '<b width="256" height="256" class="top tint">' +
+            '<svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
+            '     xmlns="http://www.w3.org/2000/svg"' +
+            '     xmlns:xlink="http://www.w3.org/1999/xlink">' +
+            '  <image x="-512" y="0" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
+            '</svg>' +
+            '</b>');
+        if (this.options.topRender){
+            cube.append(imageTop);
+        }
+
+        var imageBack = $('' +
+            '<b width="256" height="256" class="back tint">' +
+            '<svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
+            '     xmlns="http://www.w3.org/2000/svg"' +
+            '     xmlns:xlink="http://www.w3.org/1999/xlink">' +
+            '  <image x="0" y="-256" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
+            '</svg>' +
+            '</b>');
+        if (this.options.backRender){
+            cube.append(imageBack);
+        }
+
+        var imageBottom = $('' +
+            '<b width="256" height="256" class="bottom tint">' +
+            '<svg class="face" width="100%" height="100%" viewBox="0 0 256 256" version="1.1"' +
+            '     xmlns="http://www.w3.org/2000/svg"' +
+            '     xmlns:xlink="http://www.w3.org/1999/xlink">' +
+            '  <image x="0" y="0" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
+            '</svg>' +
+            '</b>');
+        if (this.options.bottomRender){
+            cube.append(imageBottom);
+        }
+
+
+        // get destination dom
+        var target=$('#svg2cube');
+        if (!target){
+            target=$('body');
+        }
+
+        // remove old sides
+        target.find('.cube').remove();
+
+        target.append(cube);
+
+
         // Now we generate some css to put everything in good positions
         var transitions = 0.1;
         var styleStr = '' +
@@ -228,7 +260,7 @@
             '                /* outline */    ' +
             '                .face {    ' +
             '                  box-sizing: border-box;    ' +
-            '                  border: ' + o.stroke['stroke-width'] + 'px solid ' + o.stroke.stroke + ';    ' +
+            '                  border: ' + o.drawOutline*o.stroke['stroke-width'] + 'px solid ' + o.stroke.stroke + ';    ' +
             '                }    ' +
             '                /* shade in sides */    ' +
             '                .wrap {    ' +
@@ -239,7 +271,7 @@
             '                .tint {    ' +
             '                  position: absolute;    ' +
             '                }    ' +
-            '                .tint:before {    ' +
+            '                .tint:after {    ' +
             '                  content: "";    ' +
             '                  display: block;    ' +
             '                  position: absolute;    ' +
@@ -248,13 +280,13 @@
             '                  left: 0;    ' +
             '                  right: 0;    ' +
             '                }    ' +
-            '                .tint:hover:before { background: none; }    ' +
-            '                .tint.top:before { background: rgba(0,0,0, ' + o.topShad + ');}    ' +
-            '                .tint.left:before { background: rgba(0,0,0, ' + o.leftShad + ');}    ' +
-            '                .tint.right:before { background: rgba(0,0,0, ' + o.rightShad + ');}    ' +
-            '                .tint.back:before { background: rgba(0,0,0, ' + o.backShad + '); }    ' +
-            '                .tint.front:before { background: rgba(0,0,0, ' + o.frontShad + '); }    ' +
-            '                .tint.bottom:before { background: rgba(0,0,0, ' + o.bottomShad + '); }    ' +
+            '                .tint:hover:after { background: none; }    ' +
+            '                .tint.top:after { background: rgba(0,0,0, ' + o.drawShading*o.topShad + ');}    ' +
+            '                .tint.left:after { background: rgba(0,0,0, ' + o.drawShading*o.leftShad + ');}    ' +
+            '                .tint.right:after { background: rgba(0,0,0, ' + o.drawShading*o.rightShad + ');}    ' +
+            '                .tint.back:after { background: rgba(0,0,0, ' + o.drawShading*o.backShad + '); }    ' +
+            '                .tint.front:after { background: rgba(0,0,0, ' + o.drawShading*o.frontShad + '); }    ' +
+            '                .tint.bottom:after { background: rgba(0,0,0, ' + o.drawShading*o.bottomShad + '); }    ' +
             '                /* curved cube. Need something block seeing through, and also extra faces, 1 px in, so inside looks uniform color. Only work for one main color */    ' +
             '                /*.face {    ' +
             '                    border-radius: ' + o.borderRadius + 'px;    ' +
