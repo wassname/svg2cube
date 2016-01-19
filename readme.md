@@ -11,15 +11,15 @@ npm i
 node svg2cube-cli.js inputs/panels.svg
 ```
 
-# Screenshots
-## Input:
-<img src="images/input.png" style="max-width: 10em;"></img>
 
-## Output:
-<img src="images/result.png" style="max-width: 10em;"></img>
 
-## GUI
-<img src="images/gui.png" style="max-width: 10em;"></img>
+# Description
+
+This project take in an image and folds it into a cube then takes a picture. It's best used for generating isometric game sprites and is best explained by looking at the screenshots and example.
+
+The input image is an unfolded cube which is folded like origami, then CSS-3D transforms are used to show the box from any angle. This could be the classic isometric angle used in isometric arcade games. The output image is rendered as a png using chrome webdriverio and cropped using graphicsmagick.
+
+Note that phantomjs can't be used because it doesn't support CSS-3D transforms.
 
 # Installation
 `npm i`
@@ -41,13 +41,16 @@ svg2cube('inputs/panels.svg',{rotateY: 45, size:256});
 Now create your own panel and generate your own sprites. Available options are
 [here for now](https://github.com/wassname/svg2cube/blob/master/svg2cube-frontend.js#L10).
 
-# Description
 
-This project take in an image and folds it into a cube then takes a picture. It's best used for generating isometric game sprites and is best explained by looking at the screenshots and example.
+# Screenshots
+## Input:
+<img src="images/input.png" style="max-width: 10em;"></img>
 
-The input image is an unfolded cube which is folded like origami, then CSS-3D transforms are used to show the box from any angle. This could be the classic isometric angle used in isometric arcade games. The output image is rendered as a png using chrome webdriver and cropped using graphicsmagick.
+## Output:
+<img src="images/result.png" style="max-width: 10em;"></img>
 
-Note that phantomjs can't be used because it doesn't support CSS-3D transforms.
+## GUI
+<img src="images/gui.png" style="max-width: 10em;"></img>
 
 # Author
 wassname.org
