@@ -1,8 +1,8 @@
-# svg2cube
+# About  svg2cube
 
 Generate isometric game sprites. Input an svg panel and it's folded into a cube and rendered from any angle. [Example hosted here](https://wassname.github.io/svg2cube/).
 
-# Quickstart
+## Quickstart
 
 ```bash
 git clone git@github.com:wassname/svg2cube.git
@@ -13,7 +13,8 @@ node svg2cube-cli.js inputs/panels.svg
 
 
 
-# Description
+
+## Description
 
 This project take in an image and folds it into a cube then takes a picture. It's best used for generating isometric game sprites and is best explained by looking at the screenshots and example.
 
@@ -21,10 +22,24 @@ The input image is an unfolded cube which is folded like origami, then CSS-3D tr
 
 Note that phantomjs can't be used because it doesn't support CSS-3D transforms.
 
-# Installation
-`npm i`
+## Features
 
-# Usage
+- Render isometric cubes or tiles
+- Flatten cubes from the top, left, or right.
+- Shade sides
+- Outline sides
+- Generate png sprites
+
+## Installation
+Clone the repository then install dependacies using node package manager (npm).
+
+```bash
+git clone git@github.com:wassname/svg2cube.git
+cd svg2cube
+npm i
+```
+
+## Usage
 First try it using the supplied panel. From the command line:
 
 ```sh
@@ -52,8 +67,5 @@ Now create your own panel and generate your own sprites. Available options are
 ## GUI
 <img src="images/gui.png" style="max-width: 10em;"></img>
 
-# Author
-wassname.org
-
-# License
-MIT
+## License
+<a href="./license.md">MIT</a>.
