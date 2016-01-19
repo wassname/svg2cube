@@ -93,7 +93,7 @@
         var o = this.options;
 
         /** Write sides if they have not already been written **/
-        if ($('body>.cube').length === 0) {
+        if ($('body .cube').length === 0) {
             var cube = $('<div class="cube cube2"></div>');
 
             var imageFront = $('' +
