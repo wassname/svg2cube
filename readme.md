@@ -53,8 +53,21 @@ var svg2cube = require('./svg2cube.js');
 svg2cube('inputs/panels.svg',{rotateY: 45, size:256});
 ```
 
-Now create your own panel and generate your own sprites. Available options are
-[here for now](https://github.com/wassname/svg2cube/blob/master/svg2cube-frontend.js#L10).
+Now create your own panel and generate your own sprites. Primary options are:
+```js
+{
+    rotateX: 30, // isometric perspective in degrees
+    rotateY: 45,
+    rotateZ: 0,
+    scaleX: 1.00,
+    scaleY: 1.00, // flatten your cube from the top
+    scaleZ: 1.00, // distort cube by pushing push face back
+    drawOutline: false,
+    drawShading: false
+}
+```
+
+ All available options are [in svg2cube-frontend.js around line 10 ](https://github.com/wassname/svg2cube/blob/master/svg2cube-frontend.js#L10).
 
 
 # Screenshots

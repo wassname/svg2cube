@@ -6,18 +6,15 @@
 (function (exports) {
     exports.SvgCube = function (svgPanel, options) {
 
-
         // Inputs and options
         this.defaultOptions = {
 
-            rotateX: 30, // isometric perspective
+            rotateX: 30, // isometric perspective in degrees
             rotateY: 45,
             rotateZ: 0,
 
-            perspective: 0, // doesn't do anything usefull
-
             scaleX: 1.00,
-            scaleY: 1.00, // flatten you cube from the top
+            scaleY: 1.00, // flatten your cube from the top
             scaleZ: 1.00, // distort cube by pushing push face back
 
             size: 400, // size of one side
@@ -26,7 +23,7 @@
             // outline
             drawOutline: false,
             drawShading: false,
-            borderRadius: 0, // in px
+            borderRadius: 2, // in px
             stroke: {
                 "stroke": 'black', // stroke color for outline
                 "stroke-width": 0, // outline width in px
@@ -41,8 +38,8 @@
             frontRot: 0,
 
             topShad: 0, // shading for top, float from 0 to 1
-            leftShad: 0.0,
-            rightShad: 0.0,
+            leftShad: 0.3,
+            rightShad: 0.1,
             backShad: 0.0,
             bottomShad: 0.0,
             frontShad: 0.0,
@@ -54,6 +51,8 @@
             rightRender: true,
             frontRender: true,
             backRender: true
+
+                perspective: 0, // doesn't do anything usefull
 
         };
 
@@ -117,7 +116,7 @@
             '  <image x="-512" y="-256" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
             '</svg>' +
             '</b>');
-        if (this.options.frontRender){
+        if (this.options.frontRender) {
             cube.append(imageFront);
         }
 
@@ -129,7 +128,7 @@
             '  <image x="-256" y="-256" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
             '</svg>' +
             '</b>');
-        if (this.options.leftRender){
+        if (this.options.leftRender) {
             cube.append(imageL);
         }
 
@@ -141,7 +140,7 @@
             '     <image x="-768" y="-256" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
             '   </svg>' +
             '</b>');
-        if (this.options.rightRender){
+        if (this.options.rightRender) {
             cube.append(imageRight);
         }
 
@@ -153,7 +152,7 @@
             '  <image x="-512" y="0" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
             '</svg>' +
             '</b>');
-        if (this.options.topRender){
+        if (this.options.topRender) {
             cube.append(imageTop);
         }
 
@@ -165,7 +164,7 @@
             '  <image x="0" y="-256" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
             '</svg>' +
             '</b>');
-        if (this.options.backRender){
+        if (this.options.backRender) {
             cube.append(imageBack);
         }
 
@@ -177,15 +176,15 @@
             '  <image x="0" y="0" width="1024" height="768" xlink:href="' + o.svgPanel + '" />' +
             '</svg>' +
             '</b>');
-        if (this.options.bottomRender){
+        if (this.options.bottomRender) {
             cube.append(imageBottom);
         }
 
 
         // get destination dom
-        var target=$('#svg2cube');
-        if (!target){
-            target=$('body');
+        var target = $('#svg2cube');
+        if (!target) {
+            target = $('body');
         }
 
         // remove old sides
@@ -200,7 +199,7 @@
             '<style id="projection">     ' +
             '                .cube {    ' +
             '                    height: ' + this.ch + 'px;    ' +
-            '                    width: ' + this.cw*2 + 'px;    ' +
+            '                    width: ' + this.cw * 2 + 'px;    ' +
             '                }    ' +
             '                 .face {    ' +
             '                  height: ' + o.size + 'px;    ' +
@@ -260,7 +259,7 @@
             '                /* outline */    ' +
             '                .face {    ' +
             '                  box-sizing: border-box;    ' +
-            '                  border: ' + o.drawOutline*o.stroke['stroke-width'] + 'px solid ' + o.stroke.stroke + ';    ' +
+            '                  border: ' + o.drawOutline * o.stroke['stroke-width'] + 'px solid ' + o.stroke.stroke + ';    ' +
             '                }    ' +
             '                /* shade in sides */    ' +
             '                .wrap {    ' +
@@ -281,12 +280,12 @@
             '                  right: 0;    ' +
             '                }    ' +
             '                .tint:hover:after { background: none; }    ' +
-            '                .tint.top:after { background: rgba(0,0,0, ' + o.drawShading*o.topShad + ');}    ' +
-            '                .tint.left:after { background: rgba(0,0,0, ' + o.drawShading*o.leftShad + ');}    ' +
-            '                .tint.right:after { background: rgba(0,0,0, ' + o.drawShading*o.rightShad + ');}    ' +
-            '                .tint.back:after { background: rgba(0,0,0, ' + o.drawShading*o.backShad + '); }    ' +
-            '                .tint.front:after { background: rgba(0,0,0, ' + o.drawShading*o.frontShad + '); }    ' +
-            '                .tint.bottom:after { background: rgba(0,0,0, ' + o.drawShading*o.bottomShad + '); }    ' +
+            '                .tint.top:after { background: rgba(0,0,0, ' + o.drawShading * o.topShad + ');}    ' +
+            '                .tint.left:after { background: rgba(0,0,0, ' + o.drawShading * o.leftShad + ');}    ' +
+            '                .tint.right:after { background: rgba(0,0,0, ' + o.drawShading * o.rightShad + ');}    ' +
+            '                .tint.back:after { background: rgba(0,0,0, ' + o.drawShading * o.backShad + '); }    ' +
+            '                .tint.front:after { background: rgba(0,0,0, ' + o.drawShading * o.frontShad + '); }    ' +
+            '                .tint.bottom:after { background: rgba(0,0,0, ' + o.drawShading * o.bottomShad + '); }    ' +
             '                /* curved cube. Need something block seeing through, and also extra faces, 1 px in, so inside looks uniform color. Only work for one main color */    ' +
             '                /*.face {    ' +
             '                    border-radius: ' + o.borderRadius + 'px;    ' +
