@@ -1,9 +1,15 @@
 svg2cube
 
-Generate isometric game sprites. Inputs an svg panel and it's folded into a cube and rendered from any angle.
+Generate isometric game sprites. Inputs an svg panel and it's folded into a cube and rendered from any angle. [Example hosted here](https://wassname.github.io/svg2cube/).
 
 # Quickstart
-TODO
+
+```bash
+git clone git@github.com:wassname/svg2cube.git
+cd svg2cube
+npm i
+node svg2cube-cli.js inputs/panels.svg
+```
 
 # Screenshots
 ## Input:
@@ -22,7 +28,7 @@ TODO
 First try it using the supplied panel. From the command line:
 
 ```sh
-npm svg2cube-cli.js inputs/panels.svg
+node svg2cube-cli.js inputs/panels.svg
 ```
 
 Or in node:

@@ -10,7 +10,7 @@ var gm = require('gm');
 var chromedriver = require('chromedriver');
 var childProcess = require('child_process');
 
-var SvgCube = require('./svgcube.js');
+var SvgCube = require('./svg2cube.js');
 
 
 var debug = process.env.DEBUG || false;

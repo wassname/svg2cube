@@ -3,9 +3,23 @@
 <head>
     <meta charset="utf-8">
     <title>svg2cube</title>
+    <style>
+    .thumbnail {
+        height: 15em;
+    }
+    .center-block
+    {
+        text-align:center;
+        display:block;
+    }
+    #svg2cube {
+        display: inline-block;
+        width: 512px;
+    }
+    </style>
 </head>
 
-<body>
+<body class="center-block">
     <h1>svg2cube - demo</h1>
 
 
@@ -15,16 +29,22 @@
         <p>The buttons allow you to try different parameters. </p>
     </div>
 
-    <img src="inputs/panels.svg" style="height: 15em;"></img>
 
+    <h2>Input</h2>
+    <img src="inputs/panels.svg" class="thumbnail"></img>
+    <h2>Rendered output</h2>
+    <img src="images/result.png"  class="thumbnail" ></img>
 
-    <p id="loading">Loading...</p>
+    <h2>Real time output</h2>
+    <div id="loading"><h2>Loading...<h2></div>
+    <div id="svg2cube"></div>
 
 </body>
 
 
-<script type="text/javascript" src="/cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
-<script type="text/javascript" src="/cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5.1/dat.gui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
 
 <script src="svg2cube-frontend.js"></script>
 
@@ -47,7 +67,7 @@
                 "stroke": 'black', // stroke color for outline
                 "stroke-width": 0, // outline width
             },
-            size: 256,
+            size: 128,
         });
 
         var gui = new dat.GUI();

@@ -156,7 +156,10 @@
                 '</b>');
             cube.append(imageBottom);
 
-            $('body').append(cube);
+            var target=$('#svg2cube');
+            if (!target){target=$('body');}
+
+            target.append(cube);
 
         }
         // Now we generate some css to put everything in good positions
@@ -165,14 +168,14 @@
             '<style id="projection">     ' +
             '                .cube {    ' +
             '                    height: ' + this.ch + 'px;    ' +
-            '                    width: ' + this.cw + 'px;    ' +
+            '                    width: ' + this.cw*2 + 'px;    ' +
             '                }    ' +
             '                 .face {    ' +
             '                  height: ' + o.size + 'px;    ' +
             '                  width: ' + o.size + 'px;    ' +
             '                }    ' +
             '                .cube {    ' +
-            '                    position: absolute;    ' +
+            '                    position: relative;    ' +
             '                    -webkit-transform: translate(' + this.cw / 2 + 'px,' + 0 * this.ch / 2 + 'px) perspective(-' + o.perspective + 'px) rotateX(-' + o.rotateX + 'deg) rotateY(' + o.rotateY + 'deg) rotateZ(' + o.rotateZ + 'deg)   scaleX(' + o.scaleX + ')  scaleY(' + o.scaleY + ')  scaleZ(' + o.scaleZ + ');    ' +
             '                    -webkit-transform-style: preserve-3d;    ' +
             '                    -webkit-transition: ' + transitions + 's;    ' +
@@ -297,6 +300,5 @@
 
     exports.SvgCube.prototype.update = function () {
         this.init();
-        console.log(this.getBounds());
     };
 })(typeof exports === 'undefined' ? this['SvgCube'] = {} : exports);
