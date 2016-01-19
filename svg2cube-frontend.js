@@ -13,12 +13,11 @@
             rotateY: 45,
             rotateZ: 0,
 
-            scaleX: 1.00,
-            scaleY: 1.00, // flatten your cube from the top
-            scaleZ: 1.00, // distort cube by pushing push face back
+            scaleX: 1.00, // fraction of size from left to right, 0.5 shrinks to 50%. 1 keeps it at 100% size
+            scaleY: 1.00, // likewise flatten from top
+            scaleZ: 1.00, // likewise flatten from front
 
-            size: 400, // size of one side
-            verbose: false,
+            size: 400, // size of one side (should not be bigger than ~half browser height or width)
 
             // outline
             drawOutline: false,
@@ -50,9 +49,9 @@
             bottomRender: true,
             rightRender: true,
             frontRender: true,
-            backRender: true
+            backRender: true,
 
-                perspective: 0, // doesn't do anything usefull
+            perspective: 0, // doesn't do anything usefull
 
         };
 
